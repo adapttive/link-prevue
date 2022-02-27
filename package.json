@@ -1,5 +1,5 @@
 {
-  "name": "link-prevue",
+  "name": "@adapttive/link-prevue",
   "version": "1.2.0",
   "description": "Vue component for generate a link preview",
   "main": "./dist/link-prevue.umd.min.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nivaldomartinez/link-prevue"
+    "url": "git://github.com/adapttive/link-prevue"
   },
   "files": [
     "dist"
@@ -26,9 +26,9 @@
   "author": "Nivaldo Martinez",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nivaldomartinez/link-prevue/issues"
+    "url": "https://github.com/adapttive/link-prevue/issues"
   },
-  "homepage": "https://github.com/nivaldomartinez/link-prevue#readme",
+  "homepage": "https://github.com/adapttive/link-prevue#readme",
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",

@@ -75,7 +75,7 @@ export default {
     viewMore: function () {
       if (this.onButtonClick !== undefined) {
         this.onButtonClick(this.response);
-      } else {
+      } else if(window !== undefined) {
         const win = window.open(this.url, "_blank");
         win.focus();
       }
