@@ -1,6 +1,6 @@
 {
   "name": "@adapttive/link-prevue",
-  "version": "1.2.0",
+  "version": "1.7.0",
   "description": "Vue component for generate a link preview",
   "main": "./dist/link-prevue.umd.min.js",
   "unpkg": "./dist/link-prevue.umd.min.js",
@@ -8,6 +8,7 @@
   "scripts": {
     "serve": "vue-cli-service serve ./dev",
     "build": "vue-cli-service build --target lib --name link-prevue src/index.js",
+    "build:component": "vue-cli-service build --target lib src/LinkPrevue.vue",
     "lint": "vue-cli-service lint"
   },
   "repository": {
@@ -15,7 +16,8 @@
     "url": "git://github.com/adapttive/link-prevue"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "keywords": [
     "link",
@@ -34,11 +36,12 @@
     "@vue/cli-plugin-eslint": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
     "babel-eslint": "^10.1.0",
+    "core-js": "^3.6.5",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11",
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.14",
+    "vue-template-compiler": "^2.6.14",
+    "vue-server-renderer": "^2.6.14"
   },
   "eslintConfig": {
     "root": true,
@@ -58,5 +61,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "dependencies": {
+    "cross-fetch": "^3.1.5"
+  }
 }

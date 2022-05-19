@@ -1,8 +1,19 @@
 <meta charset="utf-8">
 <title>link-prevue demo</title>
+<script src="https://unpkg.com/vue"></script>
 <script src="./link-prevue.umd.js"></script>
 
+<link rel="stylesheet" href="./link-prevue.css">
+
+
+<div id="app">
+  <demo></demo>
+</div>
 
 <script>
-console.log(link-prevue)
+new Vue({
+  components: {
+    demo: link-prevue
+  }
+}).$mount('#app')
 </script>

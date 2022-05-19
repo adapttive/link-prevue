@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import fetch from 'cross-fetch';
+
 export default {
   name: "link-prevue",
   props: {
@@ -75,7 +77,7 @@ export default {
     viewMore: function () {
       if (this.onButtonClick !== undefined) {
         this.onButtonClick(this.response);
-      } else if(window !== undefined) {
+      } else if(typeof window !== 'undefined') {
         const win = window.open(this.url, "_blank");
         win.focus();
       }
@@ -89,9 +91,10 @@ export default {
       if (this.isValidUrl(this.url)) {
         this.httpRequest(
           (response) => {
-            this.response = JSON.parse(response);
+            this.response = response;
           },
-          () => {
+          (error) => {
+            console.log(error);
             this.response = null;
             this.validUrl = false;
           }
@@ -99,127 +102,44 @@ export default {
       }
     },
     httpRequest: function (success, error) {
-      const http = new XMLHttpRequest();
-      const params = "url=" + this.url;
-      http.open("POST", this.apiUrl, true);
-      http.setRequestHeader(
-        "Content-type",
-        "application/x-www-form-urlencoded"
-      );
-      http.onreadystatechange = function () {
-        if (http.readyState === 4 && http.status === 200) {
-          success(http.responseText);
-        }
-        if (http.readyState === 4 && http.status === 500) {
-          error();
-        }
+      let params = {
+        url: this.url,
       };
-      http.send(params);
+
+      let body = [];
+      for (let property in params) {
+        let encodedKey = encodeURIComponent(property);
+        let encodedValue = encodeURIComponent(params[property]);
+        body.push(encodedKey + "=" + encodedValue);
+      }
+      body = body.join("&");
+
+      fetch(this.apiUrl,
+          {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            redirect: 'follow',
+            body: body
+          }
+      )
+          .then(res => {
+            if (res.status >= 400) {
+              throw new Error("Bad response from server");
+            }
+            return res.json();
+          })
+          .then(result => {
+            success(result);
+          })
+          .catch(err => {
+            error(err);
+          });
     },
   },
 };
 </script>
-
-<style scoped>
-@import url("https://fonts.googleapis.com/css?family=Hind+Siliguri:400,600");
-
-.wrapper {
-  overflow: auto;
-  border-radius: 7px 7px 7px 7px;
-  background-color: #fff;
-  -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
-  box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
-}
-
-.card-img {
-  width: 100%;
-}
-
-.card-img img {
-  width: 100%;
-  border-radius: 7px 7px 0 0;
-}
-
-img {
-  vertical-align: middle;
-  border-style: none;
-}
-
-.card-info {
-  border-radius: 0 0 7px 7px;
-  background-color: #ffffff;
-}
-
-.card-text {
-  width: 80%;
-  margin: 0 auto;
-  text-align: justify;
-}
-
-.card-text h1 {
-  text-align: center;
-  font-size: 24px;
-  color: #474747;
-  margin: 5px 0 5px 0;
-  font-family: "Hind Siliguri", sans-serif;
-}
-
-.card-text p {
-  font-family: "Hind Siliguri", sans-serif;
-  color: #8d8d8d;
-  font-size: 15px;
-  overflow: hidden;
-  margin: 0;
-  text-align: center;
-}
-
-.card-btn {
-  margin: 1em 0 1em 0;
-  position: relative;
-  text-align: center;
-}
-
-.card-btn a {
-  border-radius: 2em;
-  font-family: "Hind Siliguri", sans-serif;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  color: #ffffff;
-  background-color: #ffa9be;
-  padding: 10px 20px 10px 20px;
-  text-align: center;
-  display: inline-block;
-  text-decoration: none !important;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-}
-
-.card-btn a:hover {
-  background-color: #ff8fab;
-}
-
-/* Loader */
-.spinner {
-  margin-top: 40%;
-  margin-left: 45%;
-  height: 28px;
-  width: 28px;
-  animation: rotate 0.8s infinite linear;
-  border: 5px solid #868686;
-  border-right-color: transparent;
-  border-radius: 50%;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-</style>
